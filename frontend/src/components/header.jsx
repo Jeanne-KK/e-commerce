@@ -11,7 +11,7 @@ function Header() {
         <nav>
             <div className='font-roboto grid grid-cols-2 justify-between bg-white'>
                 <div className='flex pl-5 md:pl-10 py-5 items-center'>
-                    <a className='text-2xl' href='#home'><img src={shirtImage} alt="เสื้อ" className="w-32 h-auto rounded" /></a>
+                    <a className='text-2xl' href='#home'><img src={shirtImage} alt="icon" className="w-32 h-auto rounded" /></a>
                 </div>
                 <div className='flex w-auto justify-end pr-5 md:pr-10 py-5 items-center'>
                     <div className='flex gap-x-5 lg:gap-x-10 whitespace-nowrap items-center'>
