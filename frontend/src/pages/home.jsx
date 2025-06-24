@@ -6,7 +6,8 @@ function Home(){
     return (
         <div>
             <div><Header /></div>
-            <div>Hello hi</div>
+            <div></div>
+            
             
         </div>
     )
