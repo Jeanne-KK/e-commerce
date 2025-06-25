@@ -26,9 +26,9 @@ function Header() {
                             <button onClick={() => setCartOpen(!isCartOpen)} className='flex cursor-pointer'><ShoppingCartIcon className='size-6 flex' /></button>
                             {isCartOpen &&
                             <>
-                            <div className='fixed inset-0 bg-black/20 backdrop-blur-sm z-40' onClick={() => setCartOpen(false)}></div>
-                            <div className='absolute right-0 top-5 w-full md:w-100 p-5 bg-white border border-gray-200 rounded-md shadow-lg z-50 items-center '>
-                                    <button onClick={() => setCartOpen(!isCartOpen)} className='absolute right-1 top-1'><XMarkIcon className='size-7' /></button>
+                            <div className='fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden' onClick={() => setCartOpen(false)}></div>
+                            <div className='absolute right-0 top-5 md:top-auto w-full md:w-100 p-5 bg-white border border-gray-200 rounded-md shadow-lg z-50 items-center '>
+                                    <button onClick={() => setCartOpen(!isCartOpen)} className='absolute right-1 top-1 cursor-pointer'><XMarkIcon className='size-7' /></button>
                             
                                     <div className='w-full flex justify-center text-2xl font-bold'>Cart</div>
                                     
