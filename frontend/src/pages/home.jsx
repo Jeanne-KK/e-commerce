@@ -7,16 +7,16 @@ function Home(){
     return (
         <div className="font-roboto">
             <div><Header /></div>
-            <div className="ml-5 mr-5 md:mr-50 md:ml-50 md:pl-15 md:pr-15 lg:pt-15 bg-white">
+            <div className="ml-10 mr-10 md:mr-10 md:ml-10 md:ml-15 md:mr-15 lg:ml-20 lg:mr-20 xl:ml-70 xl:mr-70 lg:pt-15 bg-white">
                 <h2 className="text-3xl font-bold">Product</h2>
-                <div className="grid grid-cols-4 justify-between gap-x-10 mt-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-between gap-x-10 gap-y-5 mt-5">
                     <div className="">
-                        <img src={Shirt} className="w-full hover:opacity-50" /> 
+                        <img src={Shirt} className="w-full hover:opacity-50 transform-1" /> 
                         <div className="flex">
                             <div>Shirt</div>
                             <div className="ml-auto">35$</div>
                         </div>
-                        <div>
+                        <div className="text-gray-400">
                             Black
                         </div>
                     </div>
@@ -26,7 +26,7 @@ function Home(){
                             <div>Shirt</div>
                             <div className="ml-auto">35$</div>
                         </div>
-                        <div>
+                        <div className="text-gray-400">
                             Black
                         </div>
                     </div>
@@ -36,7 +36,7 @@ function Home(){
                             <div>Shirt</div>
                             <div className="ml-auto">35$</div>
                         </div>
-                        <div>
+                        <div className="text-gray-400">
                             Black
                         </div>
                     </div>
@@ -46,7 +46,7 @@ function Home(){
                             <div>Shirt</div>
                             <div className="ml-auto">35$</div>
                         </div>
-                        <div>
+                        <div className="text-gray-400">
                             Black
                         </div>
                     </div>
@@ -56,7 +56,7 @@ function Home(){
                             <div>Shirt</div>
                             <div className="ml-auto">35$</div>
                         </div>
-                        <div>
+                        <div className="text-gray-400">
                             Black
                         </div>
                     </div>
