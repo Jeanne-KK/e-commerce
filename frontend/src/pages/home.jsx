@@ -22,7 +22,7 @@ function Home(){
                         <div>
                             
                         </div>
-                        <button className="bg-indigo-600 text-white w-full p-1 rounded-sm cursor-pointer">Add to cart</button>
+                        
                     </div>
                     <div className="relative">
                         <img src={Shirt} className="w-full hover:opacity-50" /> 
@@ -33,7 +33,7 @@ function Home(){
                         <div className="text-gray-400">
                             Black
                         </div>
-                        <button className="bg-indigo-600 text-white w-full p-1 rounded-sm cursor-pointer">Add to cart</button>
+                        
                     </div>
                     <div className="relative">
                         <img src={Shirt} className="w-full hover:opacity-50" /> 
@@ -44,7 +44,7 @@ function Home(){
                         <div className="text-gray-400">
                             Black
                         </div>
-                        <button className="bg-indigo-600 text-white w-full p-1 rounded-sm cursor-pointer">Add to cart</button>
+                        
                     </div>
                     <div className="relative">
                         <img src={Shirt} className="w-full hover:opacity-50" /> 
@@ -55,9 +55,7 @@ function Home(){
                         <div className="text-gray-400">
                             Black
                         </div>
-                        <button className="bg-indigo-600 text-white w-full p-1 rounded-sm cursor-pointer">
-                            Add to cart
-                        </button>
+                        
                     </div>
                     <div className="relative">
                         <img src={Shirt} className="w-full hover:opacity-50" /> 
@@ -68,9 +66,7 @@ function Home(){
                         <div className="text-gray-400">
                             Black
                         </div>
-                        <button className="bg-indigo-600 text-white w-full p-1 rounded-sm cursor-pointer">
-                            Add to cart
-                        </button>
+                        
                     </div>
                     
                 </div>
