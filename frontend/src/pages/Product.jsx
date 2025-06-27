@@ -1,11 +1,12 @@
-import Header from "../components/header";
+import Header from "../components/Header";
 import Shirt from "../assets/shirt.png";
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid'
+import Footer from "../components/footer";
 
 function Product() {
 
     return (
-        <div className="font-roboto">
+        <div className="flex flex-col min-h-screen font-roboto">
             <div><Header /></div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:pt-10 gap-y-5 text-lg xl:text-xl pl-5 pr-5">
                 <div className="flex justify-center md:justify-end"><img src={Shirt} className="w-sm xl:w-lg" /></div>
@@ -33,6 +34,9 @@ function Product() {
                     <button className="bg-indigo-600 text-white w-full md:max-w-75 p-3 rounded-md cursor-pointer">Add to cart</button>
                 </div>
 
+            </div>
+            <div className="mt-10 sm:mt-auto">
+                <Footer />
             </div>
 
         </div>
