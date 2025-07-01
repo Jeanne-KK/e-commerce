@@ -3,6 +3,7 @@ import Home from "./pages/home";
 import Product from "./pages/product";
 import Checkout from "./pages/Checkout";
 import History from "./pages/History";
+import OrderHistory from "./pages/OrderHistory";
 
 function App() {
   
@@ -14,6 +15,7 @@ function App() {
         <Route path="/product" element={<Product />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/history" element={<History />} />
+        <Route path="/order" element={<OrderHistory />} />
       </Routes>
     </BrowserRouter>
       
