@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Shirt from "../assets/shirt.png";
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid'
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 function Product() {
 

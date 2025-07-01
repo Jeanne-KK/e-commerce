@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Shirt from "../assets/shirt.png";
 import { Link } from 'react-router-dom';
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 
 
