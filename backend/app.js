@@ -7,7 +7,7 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-  res.send('Hello from Backend!');
+  res.send('Hello!');
 });
 
 
