@@ -6,7 +6,7 @@ import History from "./pages/History";
 import OrderHistory from "./pages/OrderHistory";
 import CheckProduct from "./pages/CheckProduct";
 import SignUp from "./pages/SignUp";
-import SignIn from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 function App() {
   
 
