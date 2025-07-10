@@ -5,6 +5,8 @@ import Checkout from "./pages/Checkout";
 import History from "./pages/History";
 import OrderHistory from "./pages/OrderHistory";
 import CheckProduct from "./pages/CheckProduct";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/Signin";
 function App() {
   
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/history" element={<History />} />
         <Route path="/order" element={<OrderHistory />} />
         <Route path="/checkProduct" element={<CheckProduct />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </BrowserRouter>
       
