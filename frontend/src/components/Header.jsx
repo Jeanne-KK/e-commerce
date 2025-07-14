@@ -2,6 +2,7 @@ import { ShoppingCartIcon, MagnifyingGlassIcon, UserIcon, TrashIcon, PlusIcon, M
 import { useState } from "react";
 import logo from '../assets/name.png';
 import Shirt from "../assets/shirt.png";
+import { Link } from 'react-router-dom';
 
 
 function Header() {
@@ -151,8 +152,8 @@ function Header() {
                         <div className='relative items-center'>
                             <button className='flex cursor-pointer'><UserIcon onClick={() => setProfileOpen(!isProfileOpen)} className='size-6 flex' /></button>
                             {isProfileOpen && <div className="absolute right-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                                <a href="#signin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</a>
-                                <a href="#signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</a>
+                                <Link to="/signin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</Link>
+                                <Link to="/signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</Link>
                             </div>
                             }
                         </div>
