@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 
 const app = express();
@@ -10,6 +11,12 @@ const testJwt = "1235";
 
 
 app.use(express.json());
+app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true 
+}));
 
 
 app.get('/', (req, res) => {
