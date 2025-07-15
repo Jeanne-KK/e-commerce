@@ -30,14 +30,13 @@ function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-between gap-x-10 gap-y-5 mt-5">
                     {product.map((rows) => (
                         <Link to="/product" className="relative">
-                            <img src={Shirt} className="w-full h-auto hover:opacity-50 transform-1" />
+                            <img src={`http://localhost:3000/img/${rows.p_id}.png`} className="w-full h-auto hover:opacity-50 transform-1" />
                             <div className="flex">
                                 <div>{rows.p_name}</div>
-                                <div className="ml-auto">35 THB</div>
+                                <div className="ml-auto">{rows.p_showprice} THB</div>
                             </div>
-
                             <div className="text-gray-400">
-                                Black
+                                {rows.p_showcolor.charAt(0).toUpperCase() + rows.p_showcolor.slice(1)}
                             </div>
                             <div>
                             </div>

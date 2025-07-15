@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -12,12 +13,11 @@ const testJwt = "1235";
 
 app.use(express.json());
 app.use(cors());
-
+app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true 
 }));
-
 
 app.get('/', (req, res) => {
   res.send('Hello!');
