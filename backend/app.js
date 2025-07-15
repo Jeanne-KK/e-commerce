@@ -32,6 +32,24 @@ const con = mysql.createPool({
   database: "mydatabase"
 }).promise();
 
+//    verify JWT token middleware
+function verifyToken(req, res, next){
+  const authHeader = req.headers.authorization;
+
+  if(!authHeader){
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try{
+    const decoded = jwt.verify(token, testJwt);
+    req.user = decoded;
+    next();
+  }catch(err){
+    return res.status(401).json({ message: 'Invalid or expired token' });
+  }
+}
 
 //    login API
 app.post('/login', async (req, res) => {
@@ -80,6 +98,21 @@ app.post('/register', async (req, res) =>{
     return res.status(200).json(token);
 
   }catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+//    get infomation API
+app.post('/info', verifyToken, async (req, res) =>{
+  try{
+    const [rows] = await con.execute("select email, name, lastname from user where email = ?", [req.user.email]);
+    if(rows.length > 0){
+      return res.json({email: rows[0].email, name: rows[0].name, lastname: rows[0].lastname});
+    }
+    return res.status(400).send("Invalid Credentials");
+
+  }catch(err){
     console.log(err);
     return res.status(500).send("Internal Server Error");
   }
