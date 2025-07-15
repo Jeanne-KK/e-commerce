@@ -118,6 +118,17 @@ app.post('/info', verifyToken, async (req, res) =>{
   }
 });
 
+//    get product list
+app.get('/product', async (req, res) =>{
+  try{
+    const [rows] = await con.execute("select * from product");
+    return res.json(rows);
+  }catch(err){
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

@@ -31,7 +31,7 @@ function Header() {
         };
 
         getInfo();
-    })
+    },[])
     return (
         <nav>
             <div className='font-roboto grid grid-cols-2 justify-between bg-white'>

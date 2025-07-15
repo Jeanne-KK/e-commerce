@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 15, 2025 at 05:21 PM
+-- Generation Time: Jul 15, 2025 at 06:14 PM
 -- Server version: 9.3.0
 -- PHP Version: 8.2.27
 
@@ -56,8 +56,17 @@ CREATE TABLE `orderedIn` (
 CREATE TABLE `product` (
   `p_id` int NOT NULL,
   `p_name` varchar(100) NOT NULL,
+  `p_showcolor` varchar(50) NOT NULL,
   `p_showprice` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`p_id`, `p_name`, `p_showcolor`, `p_showprice`) VALUES
+(1, 'Shirt Hello', 'black', 200),
+(2, 'Hoodie', 'black', 500);
 
 -- --------------------------------------------------------
 
@@ -74,6 +83,18 @@ CREATE TABLE `productVariant` (
   `v_size` varchar(50) NOT NULL,
   `v_status` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `productVariant`
+--
+
+INSERT INTO `productVariant` (`v_id`, `p_id`, `v_price`, `v_stock`, `v_color`, `v_size`, `v_status`) VALUES
+(1, 1, 200, 12, 'white', 'S', 1),
+(2, 1, 200, 5, 'white', 'M', 1),
+(3, 1, 200, 3, 'white', 'L', 1),
+(4, 1, 200, 10, 'black', 'M', 1),
+(5, 2, 500, 2, 'black', 'M', 1),
+(6, 2, 500, 4, 'black', 'L', 1);
 
 -- --------------------------------------------------------
 
@@ -138,13 +159,13 @@ ALTER TABLE `order`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `p_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `productVariant`
 --
 ALTER TABLE `productVariant`
-  MODIFY `v_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `v_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
