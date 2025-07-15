@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 14, 2025 at 12:15 PM
+-- Generation Time: Jul 15, 2025 at 05:21 PM
 -- Server version: 9.3.0
 -- PHP Version: 8.2.27
 
@@ -18,8 +18,62 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `base`
+-- Database: `mydatabase`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order`
+--
+
+CREATE TABLE `order` (
+  `o_id` int NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `o_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `o_status` int NOT NULL,
+  `o_address` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderedIn`
+--
+
+CREATE TABLE `orderedIn` (
+  `o_id` int NOT NULL,
+  `v_id` int NOT NULL,
+  `v_quantity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `p_id` int NOT NULL,
+  `p_name` varchar(100) NOT NULL,
+  `p_showprice` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `productVariant`
+--
+
+CREATE TABLE `productVariant` (
+  `v_id` int NOT NULL,
+  `p_id` int NOT NULL,
+  `v_price` int NOT NULL,
+  `v_stock` int NOT NULL,
+  `v_color` varchar(50) NOT NULL,
+  `v_size` varchar(50) NOT NULL,
+  `v_status` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -28,10 +82,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `user` (
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `type` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -40,17 +94,57 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`email`, `name`, `lastname`, `password`, `type`) VALUES
-('test@test.com', 'Ginta', 'Testna', '$2b$10$TnwWhpSVthH3A6JtH2X16uChdhAVova1n5bS.6SEDzQ2DdlSVN2IK', 1);
+('test@test.com', 'Ginta', 'Testna', '$2b$10$TnwWhpSVthH3A6JtH2X16uChdhAVova1n5bS.6SEDzQ2DdlSVN2IK', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`o_id`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`p_id`);
+
+--
+-- Indexes for table `productVariant`
+--
+ALTER TABLE `productVariant`
+  ADD PRIMARY KEY (`v_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `order`
+--
+ALTER TABLE `order`
+  MODIFY `o_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `p_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `productVariant`
+--
+ALTER TABLE `productVariant`
+  MODIFY `v_id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
