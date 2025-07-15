@@ -129,6 +129,18 @@ app.get('/product', async (req, res) =>{
   }
 })
 
+//    get product variant 
+app.post('/productVariant', async (req, res) =>{
+  try{
+    const {p} = req.body;
+    const [rows] = await con.execute("select * from productVariant where p_id = ?", [p]);
+    return res.json(rows);
+  }catch(err){
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
