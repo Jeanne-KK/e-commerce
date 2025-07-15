@@ -133,7 +133,19 @@ app.get('/product', async (req, res) =>{
 app.post('/productVariant', async (req, res) =>{
   try{
     const {p} = req.body;
-    const [rows] = await con.execute("SELECT DISTINCT p.p_name, v.v_color, p.p_showprice FROM product p, productVariant v WHERE p.p_id = v.p_id AND p.p_id = 1", [p]);
+    const [rows] = await con.execute("SELECT DISTINCT p.p_name, v.v_color, p.p_showprice FROM product p, productVariant v WHERE p.p_id = v.p_id AND p.p_id = ?", [p]);
+    return res.json(rows);
+  }catch(err){
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+})
+
+//    get product size, color, stock
+app.post('/productVariant2', async (req, res) =>{
+  try{
+    const {p} = req.body;
+    const [rows] = await con.execute("SELECT v_size, v_color, v_stock FROM productVariant WHERE p_id = ?", [p]);
     return res.json(rows);
   }catch(err){
     console.log(err);
