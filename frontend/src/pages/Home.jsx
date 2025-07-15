@@ -29,7 +29,7 @@ function Home() {
                 <h2 className="text-3xl font-bold">Product</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-between gap-x-10 gap-y-5 mt-5">
                     {product.map((rows) => (
-                        <Link to="/product" className="relative">
+                        <Link to={`/product?p=${rows.p_id}`} className="relative">
                             <img src={`http://localhost:3000/img/${rows.p_id}.png`} className="w-full h-auto hover:opacity-50 transform-1" />
                             <div className="flex">
                                 <div>{rows.p_name}</div>

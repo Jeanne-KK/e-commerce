@@ -129,11 +129,11 @@ app.get('/product', async (req, res) =>{
   }
 })
 
-//    get product variant 
+//    get product showprice, name, color 
 app.post('/productVariant', async (req, res) =>{
   try{
     const {p} = req.body;
-    const [rows] = await con.execute("select * from productVariant where p_id = ?", [p]);
+    const [rows] = await con.execute("SELECT DISTINCT p.p_name, v.v_color, p.p_showprice FROM product p, productVariant v WHERE p.p_id = v.p_id AND p.p_id = 1", [p]);
     return res.json(rows);
   }catch(err){
     console.log(err);
