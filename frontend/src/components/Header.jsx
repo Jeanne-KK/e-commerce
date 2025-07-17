@@ -11,11 +11,34 @@ function Header() {
     const [isProfileOpen, setProfileOpen] = useState(false);
     const [isCartOpen, setCartOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [itemCart, setItemCart] = useState([]);
+    const [total, setTotal] = useState(0);
 
     const logout = () => {
         localStorage.removeItem("token");
         navigate("/");
     };
+
+    const getCart = () => {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        setItemCart(cart);
+        const sum = cart.reduce((price, item) => price + (item.product[0].p_showprice * item.quantity), 0);
+        //console.log(sum);
+        setTotal(sum);
+        setCartOpen(!isCartOpen);
+    };
+
+    const removeItem = (id, size, color) => {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const newCart = cart.filter(item => !(item.productId === id && item.size === size && item.color === color));
+        localStorage.setItem("cart", JSON.stringify(newCart));
+        const show = JSON.parse(localStorage.getItem("cart")) || [];
+        const newSum = newCart.reduce((price, item) => price + (item.product[0].p_showprice * item.quantity), 0);
+        setItemCart(show);
+        setTotal(newSum);
+    }
+
+   
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -31,7 +54,8 @@ function Header() {
         };
 
         getInfo();
-    },[])
+    }, [])
+
     return (
         <nav>
             <div className='font-roboto grid grid-cols-2 justify-between bg-white'>
@@ -47,113 +71,47 @@ function Header() {
                         <button onClick={() => setMobileSearchOpen(!isMobileSearchOpen)} className='flex md:hidden cursor-pointer'><MagnifyingGlassIcon className='size-6' /></button>
 
                         <div className='md:relative'>
-                            <button onClick={() => setCartOpen(!isCartOpen)} className='flex cursor-pointer'><ShoppingCartIcon className='size-6 flex' /></button>
-                            {isCartOpen &&
+                            <button onClick={() => getCart()} className='flex cursor-pointer'><ShoppingCartIcon className='size-6 flex' /></button>
+                            {isCartOpen  &&
                                 <>
                                     <div className='fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden' onClick={() => setCartOpen(false)}></div>
+                                    <div className='fixed inset-0 z-40 hidden md:block ' onClick={() => setCartOpen(false)}></div>
                                     <div className='absolute right-0 top-5 md:top-auto w-full md:w-100 p-5 bg-white border border-gray-200 rounded-md shadow-lg z-50 items-center '>
                                         <button onClick={() => setCartOpen(!isCartOpen)} className='absolute right-1 top-1 cursor-pointer'><XMarkIcon className='size-7' /></button>
 
                                         <div className='w-full flex justify-center text-2xl font-bold'>Cart</div>
 
                                         <div className='max-h-100 overflow-y-auto grid grid-cols-1 gap-y-2 mt-3'>
-                                            <div className='flex'>
-                                                <img src={Shirt} className='w-25' />
-                                                <div className='relative block w-full'>
-                                                    <div className='flex'>
-                                                        <div>Shirt</div>
-                                                        <div className='ml-auto'>35 THB</div>
-                                                    </div>
-                                                    <div className='flex w-full'>
-                                                        <div className='text-gray-400'>Black</div>
 
-                                                    </div>
-                                                    <div className='absolute bottom-0'>
-                                                        <div className='flex ml-auto items-center space-x-2'>
-                                                            <div className=''><MinusIcon className='size-4' /></div>
-                                                            <div>1</div>
-                                                            <div className=''><PlusIcon className='size-4' /></div>
+                                            {itemCart.map((rows) => (
+                                                <div className='flex'>
+                                                    <img src={`http://localhost:3000/img/${rows.productId}.png`} className='w-25' />
+                                                    <div className='relative block w-full'>
+                                                        <div className='flex'>
+                                                            <div>{rows.product[0].p_name}</div>
+                                                            <div className='ml-auto'>{rows.product[0].p_showprice * rows.quantity} THB</div>
+                                                        </div>
+                                                        <div className='flex w-full'>
+                                                            <div className='text-gray-400'>{rows.color}</div>
+                                                        </div>
+                                                        <div>
+                                                            <div className=''>{rows.size}</div>
+                                                        </div>
+                                                        <div>
+                                                            <div className=''>{rows.quantity} pieces</div>
+                                                        </div>
+
+                                                        <div className='absolute bottom-0 right-0'>
+                                                            <div onClick={() => removeItem(rows.productId, rows.size, rows.color)} className='ml-auto mt-auto cursor-pointer'><TrashIcon className='size-5' /></div>
                                                         </div>
                                                     </div>
-                                                    <div className='absolute bottom-0 right-0'>
-                                                        <div className='ml-auto mt-auto'><TrashIcon className='size-5' /></div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className='flex'>
-                                                <img src={Shirt} className='w-25' />
-                                                <div className='relative block w-full'>
-                                                    <div className='flex'>
-                                                        <div>Shirt</div>
-                                                        <div className='ml-auto'>35 THB</div>
-                                                    </div>
-                                                    <div className='flex w-full'>
-                                                        <div className='text-gray-400'>Black</div>
-
-                                                    </div>
-                                                    <div className='absolute bottom-0'>
-                                                        <div className='flex ml-auto items-center space-x-2'>
-                                                            <div className=''><MinusIcon className='size-4' /></div>
-                                                            <div>1</div>
-                                                            <div className=''><PlusIcon className='size-4' /></div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='absolute bottom-0 right-0'>
-                                                        <div className='ml-auto mt-auto'><TrashIcon className='size-5' /></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='flex'>
-                                                <img src={Shirt} className='w-25' />
-                                                <div className='relative block w-full'>
-                                                    <div className='flex'>
-                                                        <div>Shirt</div>
-                                                        <div className='ml-auto'>35 THB</div>
-                                                    </div>
-                                                    <div className='flex w-full'>
-                                                        <div className='text-gray-400'>Black</div>
-
-                                                    </div>
-                                                    <div className='absolute bottom-0'>
-                                                        <div className='flex ml-auto items-center space-x-2'>
-                                                            <div className=''><MinusIcon className='size-4' /></div>
-                                                            <div>1</div>
-                                                            <div className=''><PlusIcon className='size-4' /></div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='absolute bottom-0 right-0'>
-                                                        <div className='ml-auto mt-auto'><TrashIcon className='size-5' /></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='flex'>
-                                                <img src={Shirt} className='w-25' />
-                                                <div className='relative block w-full'>
-                                                    <div className='flex'>
-                                                        <div>Shirt</div>
-                                                        <div className='ml-auto'>35 THB</div>
-                                                    </div>
-                                                    <div className='flex w-full'>
-                                                        <div className='text-gray-400'>Black</div>
-
-                                                    </div>
-                                                    <div className='absolute bottom-0'>
-                                                        <div className='flex ml-auto items-center space-x-2'>
-                                                            <div className=''><MinusIcon className='size-4' /></div>
-                                                            <div>1</div>
-                                                            <div className=''><PlusIcon className='size-4' /></div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='absolute bottom-0 right-0'>
-                                                        <div className='ml-auto mt-auto'><TrashIcon className='size-5' /></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            ))}
                                         </div>
                                         <div className='mt-5 pt-3 border-t-1'>
                                             <div className='flex'>
                                                 <div className=''>Subtotal</div>
-                                                <div className='ml-auto '>140 THB</div>
+                                                <div className='ml-auto '>{total} THB</div>
                                             </div>
                                             <div className='flex'>
                                                 <div className=''>Shipping</div>
@@ -163,9 +121,9 @@ function Header() {
                                         </div>
                                         <div className='flex mt-3 pt-3 mb-2 border-t-1'>
                                             <div className='font-bold'>total</div>
-                                            <div className='ml-auto font-bold'>159 THB</div>
+                                            <div className='ml-auto font-bold'>{total + 19} THB</div>
                                         </div>
-                                        <button className='bg-red-500 text-white w-full p-2 rounded-sm cursor-pointer'>Check out</button>
+                                        <button onClick={() => getCart()} className='bg-red-500 text-white w-full p-2 rounded-sm cursor-pointer'>Check out</button>
 
                                     </div>
                                 </>
