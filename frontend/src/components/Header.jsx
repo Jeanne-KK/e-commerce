@@ -14,6 +14,21 @@ function Header() {
     const [itemCart, setItemCart] = useState([]);
     const [total, setTotal] = useState(0);
 
+    const gotoCheckOut = async () => {
+        const token = localStorage.getItem("token");
+        if (itemCart.length === 0) {
+            return;
+        }
+        try {
+            const res = await axios.post("http://localhost:3000/checkLogin", {}, { headers: { Authorization: `Bearer ${token}` } });
+            if (res.data.message === "login") {
+                navigate("/checkout");
+            }
+        }catch {
+            navigate("/signin")
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem("token");
         navigate("/");
@@ -38,7 +53,7 @@ function Header() {
         setTotal(newSum);
     }
 
-   
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -72,7 +87,7 @@ function Header() {
 
                         <div className='md:relative'>
                             <button onClick={() => getCart()} className='flex cursor-pointer'><ShoppingCartIcon className='size-6 flex' /></button>
-                            {isCartOpen  &&
+                            {isCartOpen &&
                                 <>
                                     <div className='fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden' onClick={() => setCartOpen(false)}></div>
                                     <div className='fixed inset-0 z-40 hidden md:block ' onClick={() => setCartOpen(false)}></div>
@@ -101,9 +116,9 @@ function Header() {
                                                             <div className=''>{rows.quantity} pieces</div>
                                                         </div>
 
-                                                        <div className='absolute bottom-0 right-0'>
+                                                        <button className='absolute bottom-0 right-0'>
                                                             <div onClick={() => removeItem(rows.productId, rows.size, rows.color)} className='ml-auto mt-auto cursor-pointer'><TrashIcon className='size-5' /></div>
-                                                        </div>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             ))}
@@ -123,7 +138,7 @@ function Header() {
                                             <div className='font-bold'>total</div>
                                             <div className='ml-auto font-bold'>{total + 19} THB</div>
                                         </div>
-                                        <button onClick={() => getCart()} className='bg-red-500 text-white w-full p-2 rounded-sm cursor-pointer'>Check out</button>
+                                        <button onClick={() => gotoCheckOut()} className='bg-red-500 text-white w-full p-2 rounded-sm cursor-pointer'>Check out</button>
 
                                     </div>
                                 </>

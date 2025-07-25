@@ -39,9 +39,12 @@ function Product() {
             setCheckSize(false);
         }
         if (colornow != "" && selectedSize != "") {
-            console.log(productId);
+            //console.log(productId);
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const existingIndex = cart.findIndex((item) => item.productId === productId && item.color === colornow && item.size === selectedSize);
+            const vID = show.findIndex((item) => item.v_size === selectedSize && item.v_color === colornow);
+            //console.log(show[vID].v_id);
+            
+            const existingIndex = cart.findIndex((item) => item.varintID === show[vID].v_id);
 
             if(existingIndex !== -1){
                 if(cart[existingIndex].quantity + amount <= maxAmount){
@@ -50,7 +53,7 @@ function Product() {
                     cart[existingIndex].quantity = maxAmount;
                 }
             }else{
-                cart.push({productId: productId, product, color: colornow, size: selectedSize, quantity: amount})
+                cart.push({varintID: show[vID].v_id, productId: productId, product, color: colornow, size: selectedSize, quantity: amount})
             }
             localStorage.setItem("cart", JSON.stringify(cart));
             
@@ -74,8 +77,8 @@ function Product() {
             //console.log(filtered);
             setColornow(nowColor);
             setStocknow(filtered);
-            const sizes = filtered.map(item => item.v_size);
-
+            const sizes = filtered.filter(item => item.v_stock !== 0).map(item => item.v_size);
+            console.log(sizes);
             setGsize(sizes);
             if (selectedSize && !sizes.includes(selectedSize)) {
                 setSelectedSize('');
