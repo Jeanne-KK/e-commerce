@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 15, 2025 at 06:14 PM
--- Server version: 9.3.0
+-- Generation Time: Jul 25, 2025 at 10:42 PM
+-- Server version: 9.4.0
 -- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -32,8 +32,21 @@ CREATE TABLE `order` (
   `email` varchar(100) NOT NULL,
   `o_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `o_status` int NOT NULL,
-  `o_address` text NOT NULL
+  `o_address` text NOT NULL,
+  `o_email` varchar(100) NOT NULL,
+  `o_note` text NOT NULL,
+  `o_phone` varchar(20) NOT NULL,
+  `o_name` varchar(200) NOT NULL,
+  `o_totalprice` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`o_id`, `email`, `o_date`, `o_status`, `o_address`, `o_email`, `o_note`, `o_phone`, `o_name`, `o_totalprice`) VALUES
+(1, 'test@test.com', '2025-07-25 22:40:33', 0, '12/5 30000', 'test@test.com', '-', '01111', 'K K', 419),
+(2, 'test@test.com', '2025-07-25 22:42:15', 0, '13 30000', 'test@test.com', 'take this', '0000', 'Ginta Testna', 1219);
 
 -- --------------------------------------------------------
 
@@ -46,6 +59,15 @@ CREATE TABLE `orderedIn` (
   `v_id` int NOT NULL,
   `v_quantity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orderedIn`
+--
+
+INSERT INTO `orderedIn` (`o_id`, `v_id`, `v_quantity`) VALUES
+(1, 3, 2),
+(2, 3, 1),
+(2, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -91,9 +113,9 @@ CREATE TABLE `productVariant` (
 INSERT INTO `productVariant` (`v_id`, `p_id`, `v_price`, `v_stock`, `v_color`, `v_size`, `v_status`) VALUES
 (1, 1, 200, 12, 'white', 'S', 1),
 (2, 1, 200, 5, 'white', 'M', 1),
-(3, 1, 200, 3, 'white', 'L', 1),
+(3, 1, 200, 0, 'white', 'L', 1),
 (4, 1, 200, 10, 'black', 'M', 1),
-(5, 2, 500, 2, 'black', 'M', 1),
+(5, 2, 500, 0, 'black', 'M', 1),
 (6, 2, 500, 4, 'black', 'L', 1);
 
 -- --------------------------------------------------------
@@ -153,7 +175,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `o_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `o_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product`

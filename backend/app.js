@@ -54,6 +54,7 @@ function verifyToken(req, res, next) {
 //    Send order
 app.post('/order', verifyToken, async (req, res) => {
   const { cart, address, name, email, phone, postal, note } = req.body;
+  let totalPrice = 19
   try {
     //console.log(cart);
     //console.log(address);
@@ -68,9 +69,11 @@ app.post('/order', verifyToken, async (req, res) => {
     const [rows] = await con.execute(`SELECT * FROM productVariant WHERE p_id IN (${productIds.map(() => '?').join(',')})`, productIds);
 
     //    check productVariant have enough in stock 
+    
     for (const item of cart) {
       const match = rows.find(
         row => row.v_id === item.varintID
+        
       );
       if (!match) {
         throw new Error(`variant not found for p_id : ${item.productId}`);
@@ -78,6 +81,7 @@ app.post('/order', verifyToken, async (req, res) => {
       if (item.quantity > match.v_stock) {
         throw new Error(`Not enough stock for p_id : ${item.productId}`);
       }
+      totalPrice += match.v_price * item.quantity; 
     }
 
   } catch (err) {
@@ -91,7 +95,7 @@ app.post('/order', verifyToken, async (req, res) => {
 
   //    insert order
   try {
-    const [insertOrder] = await con.execute("insert into `order` (email, o_status, o_address, o_note, o_phone, o_email, o_name) values (?, 0, ?, ?, ?, ?, ?)", [req.user.email, `${address} ${postal}`, note, phone, email, name]);
+    const [insertOrder] = await con.execute("insert into `order` (email, o_status, o_address, o_note, o_phone, o_email, o_name, o_totalprice) values (?, 0, ?, ?, ?, ?, ?, ?)", [req.user.email, `${address} ${postal}`, note, phone, email, name, totalPrice]);
     OrderId = insertOrder.insertId;
   } catch (err) {
     console.log(err);
