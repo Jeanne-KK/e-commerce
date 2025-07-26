@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function History() {
-    
+    const navigate = useNavigate(); 
     const [history, setHistory] = useState([]);
     
 
@@ -43,18 +43,27 @@ function History() {
         }
     }
 
-    function renderStatusDetail(status) {
+    function cancelOrder(orderId){
+        console.log(orderId);
+
+    }
+
+    function viewDetail(page){
+        navigate(`/order?o=${page}`);
+    }
+
+    function renderStatusDetail(status, orderId) {
         switch (status) {
             case 0:
                 return (
                     <>
                         <div className="flex justify-center items-center text-red-500 hover:underline cursor-pointer ">
-                            <button className="border-1 w-full rounded-sm p-1 border-red-500 hover:underline text-red-500 cursor-pointer">
+                            <button onClick={()=>cancelOrder(orderId)} className="border-1 w-full rounded-sm p-1 border-red-500 hover:underline text-red-500 cursor-pointer">
                                 Cancel
                             </button>
                         </div>
                         <div className="flex justify-center items-center    ">
-                            <button className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                            <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                         </div>
                     </>
                 )
@@ -69,7 +78,7 @@ function History() {
                             </button>
                         </div>
                         <div className="flex justify-center items-center    ">
-                            <button className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                            <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                         </div>
                     </>
                 )
@@ -83,7 +92,7 @@ function History() {
                         </button>
                     </div>
                     <div className="flex justify-center items-center    ">
-                        <button className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                        <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                     </div>
                 </>)
 
@@ -118,7 +127,7 @@ function History() {
 
 
                         </div>
-                        {renderStatusDetail(rows.o_status)}
+                        {renderStatusDetail(rows.o_status, rows.o_id)}
 
 
                     </div>

@@ -69,11 +69,11 @@ app.post('/order', verifyToken, async (req, res) => {
     const [rows] = await con.execute(`SELECT * FROM productVariant WHERE p_id IN (${productIds.map(() => '?').join(',')})`, productIds);
 
     //    check productVariant have enough in stock 
-    
+
     for (const item of cart) {
       const match = rows.find(
         row => row.v_id === item.varintID
-        
+
       );
       if (!match) {
         throw new Error(`variant not found for p_id : ${item.productId}`);
@@ -81,7 +81,7 @@ app.post('/order', verifyToken, async (req, res) => {
       if (item.quantity > match.v_stock) {
         throw new Error(`Not enough stock for p_id : ${item.productId}`);
       }
-      totalPrice += match.v_price * item.quantity; 
+      totalPrice += match.v_price * item.quantity;
     }
 
   } catch (err) {
@@ -135,7 +135,7 @@ app.post('/order', verifyToken, async (req, res) => {
     console.log(err);
     return res.status(500).send("update stock err");
   }
-  return res.json({message: "success", orderID: OrderId})
+  return res.json({ message: "success", orderID: OrderId })
 });
 
 //    check Login
@@ -230,9 +230,97 @@ app.post('/orderhistory', verifyToken, async (req, res) => {
   }
 });
 
+//    cancel order API
+app.post('/cancelOrder', verifyToken, async (req, res) => {
+
+  //    check orderDetail connect with user
+  let rows = [];
+  const { orderId } = req.body;
+  try {
+    const [data] = await con.execute("select v_id, v_quantity from orderedIn oi, `order` o where oi.o_id = o.o_id and o.email = ? and o.o_id = ?", [req.user.email, orderId]);
+    if(data.length === 0){
+      return res.status(400).send("Invalid Credentials");
+
+    }
+    rows = data;
+
+  } catch (err) {
+    return res.status(400).send("Invalid Credentials");
+
+  }
+
+  //    remove orderedIn with orderId cancel
+  try {
+    const [data] = await con.execute("delete from orderedIn where o_id = ?", [orderId]);
+  } catch (err) {
+    console.log("err to remove orderedIn with orderId");
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+
+  //    backup order by orderId
+  let backup = [];
+  try {
+    const [data] = await con.execute("select * from `order` where o_id = ?", [orderId]);
+    backup = data;
+  } catch (err) {
+    console.log("err to backup order with orderId");
+    console.log(err);
+
+    //    insert orderedIn back
+    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
+    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
+    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
+    const [insertOrderVarint] = await con.execute(`${sql}`, params);
+    return res.status(500).send("Internal Server Error");
+  }
+
+  //    remove order by orderId
+  try {
+    const [data] = await con.execute("delete from `order` where o_id = ?", [orderId]);
+  } catch (err) {
+    console.log("err to remove order with orderId");
+    console.log(err);
+
+    //    insert orderedIn back
+    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
+    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
+    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
+    const [insertOrderVarint] = await con.execute(`${sql}`, params);
+    return res.status(500).send("Internal Server Error");
+  }
+
+  //    plus stock item from cancel order
+  try {
+    const placeholders1 = rows.map((items) => `when ${items.v_id} then v_stock + ${items.v_quantity}`).join(' ');
+    const placeholders2 = rows.map(() => `?`).join(",");
+    const params = rows.flatMap(item => [item.v_id]);
+    const sql = `update productVariant set v_stock = case v_id ${placeholders1} end where v_id in (${placeholders2})`;
+    const [data] = await con.execute(sql, params);
+
+  } catch (err) {
+    console.log("err to plus stock from cancel order");
+    console.log(err);
+    
+    //    recover order
+    const [insertOrder] = await con.execute("insert into `order` (o_id, email, o_date, o_status, o_address, o_note, o_phone, o_email, o_name, o_totalprice) values (?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", [orderId, req.user.email, backup[0].o_date, backup[0].o_address, backup[0].o_note, backup[0].o_phone, backup[0].o_email, backup[0].o_name, backup[0].o_totalprice]);
+
+    //    insert orderedIn back
+    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
+    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
+    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
+    const [insertOrderVarint] = await con.execute(`${sql}`, params);
+    return res.status(500).send("Internal Server Error");
+  }
+  return res.json({status: "success"});
+
+
+
+});
+
 //    get order detail API
 app.post('/orderdetail', verifyToken, async (req, res) => {
-  const {o} = req.body;
+  const { o } = req.body;
   try {
     const [rows] = await con.execute("SELECT * FROM `order` o, orderedIn oi, productVariant v, product p WHERE p.p_id = v.p_id and v.v_id = oi.v_id and o.o_id = oi.o_id and o.o_id = ? and email = ?", [o, req.user.email]);
     if (rows.length > 0) {
