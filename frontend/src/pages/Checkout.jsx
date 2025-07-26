@@ -40,6 +40,9 @@ function Checkout() {
         try {
             const token = localStorage.getItem("token");
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if(cart.length === 0){
+                return
+            }
             const res = await axios.post("http://localhost:3000/order", { cart, address, name, email, phone, postal, note }, { headers: { Authorization: `Bearer ${token}` } });
             //console.log(res.data.message);
             

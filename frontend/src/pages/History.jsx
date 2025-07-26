@@ -9,26 +9,38 @@ import { useNavigate } from 'react-router-dom';
 
 
 function History() {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const [history, setHistory] = useState([]);
-    
 
-    useEffect(() => {
+    const getHistory = async () => {
         const token = localStorage.getItem("token");
-        const getHistory = async () => {
-            try {
-                const res = await axios.post("http://localhost:3000/orderhistory", {}, { headers: { Authorization: `Bearer ${token}` } });
-                console.log(res.data);
-                setHistory(res.data);
+        try {
+            const res = await axios.post("http://localhost:3000/orderhistory", {}, { headers: { Authorization: `Bearer ${token}` } });
+            console.log(res.data);
+            setHistory(res.data);
 
-            } catch (err) {
-                console.error("Error fetching info:", err);
+        } catch (err) {
+            console.error("Error fetching info:", err);
+            
 
-            }
-        };
-
+        }
+    };
+    useEffect(() => {
         getHistory();
     }, []);
+
+    const cancelOrder = async (orderId) => {
+        try {
+            const token = localStorage.getItem("token");
+            const cancel = await axios.post("http://localhost:3000/cancelOrder", { orderId }, { headers: { Authorization: `Bearer ${token}` } });
+            console.log(cancel);
+            if (cancel.data.status === "success") {
+                await getHistory();
+            }
+        } catch (err) {
+            console.error("Error to cancel", err);
+        }
+    }
 
     function renderStatus(status) {
         switch (status) {
@@ -43,12 +55,7 @@ function History() {
         }
     }
 
-    function cancelOrder(orderId){
-        console.log(orderId);
-
-    }
-
-    function viewDetail(page){
+    function viewDetail(page) {
         navigate(`/order?o=${page}`);
     }
 
@@ -58,12 +65,12 @@ function History() {
                 return (
                     <>
                         <div className="flex justify-center items-center text-red-500 hover:underline cursor-pointer ">
-                            <button onClick={()=>cancelOrder(orderId)} className="border-1 w-full rounded-sm p-1 border-red-500 hover:underline text-red-500 cursor-pointer">
+                            <button onClick={() => cancelOrder(orderId)} className="border-1 w-full rounded-sm p-1 border-red-500 hover:underline text-red-500 cursor-pointer">
                                 Cancel
                             </button>
                         </div>
                         <div className="flex justify-center items-center    ">
-                            <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                            <button onClick={() => viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                         </div>
                     </>
                 )
@@ -78,7 +85,7 @@ function History() {
                             </button>
                         </div>
                         <div className="flex justify-center items-center    ">
-                            <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                            <button onClick={() => viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                         </div>
                     </>
                 )
@@ -92,7 +99,7 @@ function History() {
                         </button>
                     </div>
                     <div className="flex justify-center items-center    ">
-                        <button onClick={()=>viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                        <button onClick={() => viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
                     </div>
                 </>)
 
@@ -132,7 +139,7 @@ function History() {
 
                     </div>
                 ))}
-                
+
 
             </div>
             <div className="mt-10 md:mt-auto">

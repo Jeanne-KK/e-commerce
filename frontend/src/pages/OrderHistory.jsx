@@ -31,7 +31,9 @@ function OrderHistory() {
 
 
             } catch (err) {
+                
                 console.error("Error fetching info:", err);
+                navigate("/");
 
             }
         };
