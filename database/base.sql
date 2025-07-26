@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jul 25, 2025 at 10:42 PM
+-- Generation Time: Jul 26, 2025 at 03:54 AM
 -- Server version: 9.4.0
 -- PHP Version: 8.2.27
 
@@ -45,8 +45,9 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`o_id`, `email`, `o_date`, `o_status`, `o_address`, `o_email`, `o_note`, `o_phone`, `o_name`, `o_totalprice`) VALUES
-(1, 'test@test.com', '2025-07-25 22:40:33', 0, '12/5 30000', 'test@test.com', '-', '01111', 'K K', 419),
-(2, 'test@test.com', '2025-07-25 22:42:15', 0, '13 30000', 'test@test.com', 'take this', '0000', 'Ginta Testna', 1219);
+(1, 'test@test.com', '2025-07-26 03:48:06', 0, '123/23 Chiang Mai  10000', 'test@test.com', 'careful dog', '0129485723', 'Ginta Testna', 669),
+(2, 'bin@sss.com', '2025-07-26 03:49:07', 3, '12/3 Chiang Rai 70000', 'bin@sss.com', '', '0987654321', 'Nasus Valor', 1019),
+(3, 'bin@sss.com', '2025-07-26 03:51:45', 3, '12/23 Chiang Rai 70000', 'bin@sss.com', '', '0987654321', 'Nasus Valor', 1519);
 
 -- --------------------------------------------------------
 
@@ -65,9 +66,11 @@ CREATE TABLE `orderedIn` (
 --
 
 INSERT INTO `orderedIn` (`o_id`, `v_id`, `v_quantity`) VALUES
-(1, 3, 2),
-(2, 3, 1),
-(2, 5, 2);
+(1, 7, 1),
+(1, 4, 2),
+(2, 5, 1),
+(2, 6, 1),
+(3, 7, 6);
 
 -- --------------------------------------------------------
 
@@ -88,7 +91,8 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`p_id`, `p_name`, `p_showcolor`, `p_showprice`) VALUES
 (1, 'Shirt Hello', 'black', 200),
-(2, 'Hoodie', 'black', 500);
+(2, 'Hoodie', 'black', 500),
+(3, 'Freepick', 'white', 250);
 
 -- --------------------------------------------------------
 
@@ -111,12 +115,14 @@ CREATE TABLE `productVariant` (
 --
 
 INSERT INTO `productVariant` (`v_id`, `p_id`, `v_price`, `v_stock`, `v_color`, `v_size`, `v_status`) VALUES
-(1, 1, 200, 12, 'white', 'S', 1),
-(2, 1, 200, 5, 'white', 'M', 1),
-(3, 1, 200, 0, 'white', 'L', 1),
-(4, 1, 200, 10, 'black', 'M', 1),
-(5, 2, 500, 0, 'black', 'M', 1),
-(6, 2, 500, 4, 'black', 'L', 1);
+(1, 1, 200, 10, 'white', 'S', 1),
+(2, 1, 200, 10, 'white', 'M', 1),
+(3, 1, 200, 10, 'white', 'L', 1),
+(4, 1, 200, 8, 'black', 'M', 1),
+(5, 2, 500, 3, 'black', 'M', 1),
+(6, 2, 500, 3, 'black', 'L', 1),
+(7, 3, 250, 6, 'white', 'M', 1),
+(8, 3, 250, 7, 'white', 'S', 1);
 
 -- --------------------------------------------------------
 
@@ -137,6 +143,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`email`, `name`, `lastname`, `password`, `type`) VALUES
+('bin@sss.com', 'Nasus', 'Valor', '$2b$10$PPwhdeh2h5ZJEwF2YFlhpeiHCh8aWbu0x2f2dvS5qnQThShYQkzeK', 0),
 ('test@test.com', 'Ginta', 'Testna', '$2b$10$TnwWhpSVthH3A6JtH2X16uChdhAVova1n5bS.6SEDzQ2DdlSVN2IK', 0);
 
 --
@@ -175,19 +182,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `o_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `o_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `p_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `productVariant`
 --
 ALTER TABLE `productVariant`
-  MODIFY `v_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `v_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

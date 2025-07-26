@@ -50,6 +50,8 @@ function History() {
                 return <span className="text-green-600">Complete</span>;
             case 2:
                 return <span className="text-blue-500">Deliver</span>;
+            case 3:
+                return <span className="text-red-500">Cancel</span>;
             default:
                 return <span className="text-gray-500">Unknown Status</span>;
         }
@@ -92,6 +94,17 @@ function History() {
 
 
             case 2:
+                return (<>
+                    <div className="flex justify-center items-center text-red-500 hover:underline cursor-pointer ">
+                        <button className="border-1 w-full rounded-sm p-1 border-[#4f39f6]  hover:underline text-white bg-[#4f39f6] cursor-pointer">
+                            Reorder
+                        </button>
+                    </div>
+                    <div className="flex justify-center items-center    ">
+                        <button onClick={() => viewDetail(orderId)} className="border-1 w-full rounded-sm p-1 border-gray-300 hover:underline text-black cursor-pointer">View Detail</button>
+                    </div>
+                </>)
+            case 3:
                 return (<>
                     <div className="flex justify-center items-center text-red-500 hover:underline cursor-pointer ">
                         <button className="border-1 w-full rounded-sm p-1 border-[#4f39f6]  hover:underline text-white bg-[#4f39f6] cursor-pointer">

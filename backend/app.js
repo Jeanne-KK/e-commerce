@@ -240,7 +240,6 @@ app.post('/cancelOrder', verifyToken, async (req, res) => {
     const [data] = await con.execute("select v_id, v_quantity from orderedIn oi, `order` o where oi.o_id = o.o_id and o.email = ? and o.o_id = ?", [req.user.email, orderId]);
     if(data.length === 0){
       return res.status(400).send("Invalid Credentials");
-
     }
     rows = data;
 
@@ -249,44 +248,12 @@ app.post('/cancelOrder', verifyToken, async (req, res) => {
 
   }
 
-  //    remove orderedIn with orderId cancel
+  //    update order status to cancel by orderId
   try {
-    const [data] = await con.execute("delete from orderedIn where o_id = ?", [orderId]);
+    const [data] = await con.execute("update `order` set o_status = ? where o_id = ?", [3, orderId]);
   } catch (err) {
-    console.log("err to remove orderedIn with orderId");
+    console.log("err to update order status cancel with orderId");
     console.log(err);
-    return res.status(500).send("Internal Server Error");
-  }
-
-  //    backup order by orderId
-  let backup = [];
-  try {
-    const [data] = await con.execute("select * from `order` where o_id = ?", [orderId]);
-    backup = data;
-  } catch (err) {
-    console.log("err to backup order with orderId");
-    console.log(err);
-
-    //    insert orderedIn back
-    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
-    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
-    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
-    const [insertOrderVarint] = await con.execute(`${sql}`, params);
-    return res.status(500).send("Internal Server Error");
-  }
-
-  //    remove order by orderId
-  try {
-    const [data] = await con.execute("delete from `order` where o_id = ?", [orderId]);
-  } catch (err) {
-    console.log("err to remove order with orderId");
-    console.log(err);
-
-    //    insert orderedIn back
-    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
-    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
-    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
-    const [insertOrderVarint] = await con.execute(`${sql}`, params);
     return res.status(500).send("Internal Server Error");
   }
 
@@ -299,17 +266,10 @@ app.post('/cancelOrder', verifyToken, async (req, res) => {
     const [data] = await con.execute(sql, params);
 
   } catch (err) {
+    //    update order back
+    const [data] = await con.execute("update `order` set o_status = ? where o_id = ?", [rows[0].o_status, orderId]);
     console.log("err to plus stock from cancel order");
-    console.log(err);
-    
-    //    recover order
-    const [insertOrder] = await con.execute("insert into `order` (o_id, email, o_date, o_status, o_address, o_note, o_phone, o_email, o_name, o_totalprice) values (?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", [orderId, req.user.email, backup[0].o_date, backup[0].o_address, backup[0].o_note, backup[0].o_phone, backup[0].o_email, backup[0].o_name, backup[0].o_totalprice]);
-
-    //    insert orderedIn back
-    const placeholders = rows.map(() => '(?, ?, ?)').join(', ');
-    const params = rows.flatMap(item => [orderId, item.v_id, item.v_quantity]);
-    const sql = `INSERT INTO orderedIn (o_id, v_id, v_quantity) VALUES ${placeholders}`;
-    const [insertOrderVarint] = await con.execute(`${sql}`, params);
+    console.log(err); 
     return res.status(500).send("Internal Server Error");
   }
   return res.json({status: "success"});

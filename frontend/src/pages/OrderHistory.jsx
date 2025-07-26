@@ -49,6 +49,8 @@ function OrderHistory() {
                 return <span className="text-green-600">Complete</span>;
             case 2:
                 return <span className="text-blue-500">Deliver</span>;
+            case 3:
+                return <span className="text-red-500">Cancel</span>;
             default:
                 return <span className="text-gray-500">Unknown Status</span>;
         }
@@ -74,6 +76,8 @@ function OrderHistory() {
                 return "Paid";
             case 2:
                 return "Paid";
+            case 3:
+                return "Not paid";
             default:
                 return "Unknow";
         }
@@ -116,7 +120,7 @@ function OrderHistory() {
             default:
                 return (<>
                     <div className="grid grid-cols-1  mt-5">
-                        <span className="flex justify-center">Unknow</span>
+                    
                     </div>
                 </>)
         }

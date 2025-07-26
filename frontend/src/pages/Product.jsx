@@ -4,9 +4,10 @@ import { PlusIcon, MinusIcon } from '@heroicons/react/24/solid'
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import axios, { all } from 'axios';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 function Product() {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [product, setProduct] = useState([]);
     const [show, setShow] = useState([]);
@@ -59,6 +60,7 @@ function Product() {
             
             
         }
+        navigate("/");
     };
 
     const handleSizeChange = (size) => {
