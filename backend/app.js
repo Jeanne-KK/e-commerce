@@ -135,7 +135,7 @@ app.post('/order', verifyToken, async (req, res) => {
     console.log(err);
     return res.status(500).send("update stock err");
   }
-  return res.json({message: "success"})
+  return res.json({message: "success", orderID: OrderId})
 });
 
 //    check Login
@@ -214,6 +214,38 @@ app.post('/info', verifyToken, async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
+
+//    get order history API
+app.post('/orderhistory', verifyToken, async (req, res) => {
+  try {
+    const [rows] = await con.execute("select o_id, o_date, o_totalprice, o_status from `order` where email = ?", [req.user.email]);
+    if (rows.length > 0) {
+      return res.json(rows);
+    }
+    return res.status(400).send("Invalid Credentials");
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+//    get order detail API
+app.post('/orderdetail', verifyToken, async (req, res) => {
+  const {o} = req.body;
+  try {
+    const [rows] = await con.execute("SELECT * FROM `order` o, orderedIn oi, productVariant v, product p WHERE p.p_id = v.p_id and v.v_id = oi.v_id and o.o_id = oi.o_id and o.o_id = ? and email = ?", [o, req.user.email]);
+    if (rows.length > 0) {
+      return res.json(rows);
+    }
+    return res.status(400).send("Invalid Credentials");
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
 
 //    get product list
 app.get('/product', async (req, res) => {

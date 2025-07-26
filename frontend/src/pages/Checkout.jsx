@@ -45,7 +45,7 @@ function Checkout() {
             
             if(res.data.message){
                 localStorage.removeItem("cart");
-                navigate("/history");
+                navigate(`/order?o=${res.data.orderID}`);
             }
             
         } catch (err) {
